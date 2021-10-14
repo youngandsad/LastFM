@@ -19,10 +19,8 @@ const cardsSlice = createSlice({
   initialState,
   reducers: {
     likeCard: (state, action) => {
-      const liked = {
-        data: action.payload
-      }
-      // state.likedCards.push(liked)
+      const liked = action.payload
+      state.likedCards.push(liked)
       console.log(liked);
     },
     
@@ -33,7 +31,8 @@ const cardsSlice = createSlice({
         state.status = 'loading'
       })
     .addCase(fetchCards.fulfilled, (state, action) => {
-        return action.payload
+        state.status = 'success'
+        state.posts.push(action.payload)
       })
     .addCase(fetchCards.rejected, (state, action) => {
         state.status = 'failed'
