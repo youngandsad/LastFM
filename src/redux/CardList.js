@@ -3,7 +3,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 const initialState = {
   posts: [],
   status: 'idle',
-  error: null
+  error: null,
+  likedCards: [],
 }
 
 export const fetchCards = createAsyncThunk('cards/fetchCards', async () => {
@@ -12,10 +13,20 @@ export const fetchCards = createAsyncThunk('cards/fetchCards', async () => {
   return data;
 })
 
-const usersSlice = createSlice({
+
+const cardsSlice = createSlice({
   name: 'cards',
   initialState,
-  reducers: {},
+  reducers: {
+    likeCard: (state, action) => {
+      const liked = {
+        data: action.payload
+      }
+      // state.likedCards.push(liked)
+      console.log(liked);
+    },
+    
+  },
   extraReducers(builder) {
     builder
     .addCase(fetchCards.pending, (state, action) => {
@@ -28,8 +39,14 @@ const usersSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
+      
   }
+
+  
 })
 
 
-export default usersSlice.reducer
+
+export const { likeCard, cardlist, postStatus, likedCards } = cardsSlice.actions
+
+export default cardsSlice.reducer
