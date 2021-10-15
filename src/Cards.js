@@ -28,6 +28,7 @@ function Cards() {
 
     const handleClickLike = (e) => {
       const likeIcon = e.target.closest('.like-icon');
+
       likeIcon.closest('.card-item').classList.toggle('checked');
       const parentBlock = e.target.closest('.card-item')
       // данные с карточки в объект
@@ -38,11 +39,6 @@ function Cards() {
       };
 
       dispatch(likeCard(cardsObj))
-
-      if(!likeIcon.closest('.card-item').classList.contains('checked')) {
-        dispatch(unlikeCard())
-        
-      }
 
     }
 
@@ -103,11 +99,13 @@ function Cards() {
                   {
                     cardlist.recenttracks.track.map((item, index) => (
                       <div key={index} id={index} className="card-item">
+                        <div>
                         <div className="like-icon"><FaRegHeart onClick={handleClickLike}/></div>
-                        <p><img src={item.image[2]['#text']} alt="" /></p>
-                        <h4>Artist: {item.artist['#text']}</h4>
-                        <p>Song name: {item.name}</p>
-                        <p>Album name: {item.album['#text']}</p>
+                          <p><img src={item.image[3]['#text']} alt="" /></p>
+                          <h4>Artist: {item.artist['#text']}</h4>
+                          <p>Song name: {item.name}</p>
+                          <p>Album name: {item.album['#text']}</p>
+                        </div>
                         <div className="delete-icon"><FaTrashAlt onClick={handleClickDelete}/></div>
                       </div>
                     ))

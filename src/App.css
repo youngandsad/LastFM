@@ -24,6 +24,10 @@
   color: #61dafb;
 }
 
+.filter-btn {
+  margin: 10px 0 0 0;
+}
+
 .cards-block {
   display: flex;
   flex-wrap: wrap;
@@ -38,6 +42,9 @@
   border-radius: 10px;
   margin: 10px;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-item img {
@@ -78,4 +85,11 @@
   width: 25px;
   height: 25px;
   display: inline-block;
+}
+
+.delete-icon {
+  height: 50px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
