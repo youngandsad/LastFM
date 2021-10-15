@@ -42,13 +42,13 @@
   border-radius: 10px;
   margin: 10px;
   cursor: pointer;
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
 .card-item img {
-  width: 100%;
+  max-width: 100%;
+  width: 200px;
 }
 
 .card-item svg {

@@ -53,7 +53,7 @@ function Cards() {
                 el.classList.add('show')
               }
               if(el.classList.contains('checked')) {
-                el.style.display = 'block'
+                el.style.display = 'flex'
               } else {
                 el.style.display = 'none';
               }
