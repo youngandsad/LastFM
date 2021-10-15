@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { useSelector } from 'react-redux'
 
 const initialState = {
   posts: [],
@@ -13,6 +14,19 @@ export const fetchCards = createAsyncThunk('cards/fetchCards', async () => {
   return data;
 })
 
+
+export const GetData = () => {
+  return useSelector((state) => state.cardList.posts[0])
+}
+
+export const GetStatus = () => {
+  return useSelector(state => state.cardList.status)
+}
+
+export const GetLikedCards = () => {
+  return useSelector((state) => state.cardList.likedCards)
+
+}
 
 const cardsSlice = createSlice({
   name: 'cards',

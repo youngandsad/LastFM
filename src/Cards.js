@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { fetchCards, likeCard, unlikeCard, deleteCard } from './redux/CardList'
+import { useDispatch } from 'react-redux'
+import { fetchCards, GetStatus, GetLikedCards, GetData, likeCard, deleteCard } from './redux/CardList'
 import { FaRegHeart } from 'react-icons/fa';
 import { FaTrashAlt } from 'react-icons/fa';
 
@@ -10,13 +10,11 @@ import { FaTrashAlt } from 'react-icons/fa';
 
 function Cards() {
 
-    const cardlist = useSelector((state) => state.cardList.posts[0])
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
-    const postStatus = useSelector(state => state.cardList.status)
-    const error = useSelector(state => state.cardList.error)
-
-    const likedCards = useSelector((state) => state.cardList.likedCards)
+    const cardlist = GetData();
+    const postStatus = GetStatus();
+    const likedCards = GetLikedCards();
 
     useEffect(() => {
       if (postStatus === 'idle') {
@@ -76,11 +74,9 @@ function Cards() {
     const handleClickDelete = (e) => {
         const delBtn = e.target;
         const cardId = delBtn.closest('.card-item').getAttribute('id');
-        delBtn.closest('.card-item').remove();
         cardlist.recenttracks.track.map((item, index) => {
             if(parseInt(cardId) === index) {
-                const deletedItems = {};
-                deletedItems[index] = item;
+                const deletedItems = index
                 dispatch(deleteCard(deletedItems))
             }
         })
