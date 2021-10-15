@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchCards, likeCard } from './redux/CardList'
+import { fetchCards, likeCard, unlikeCard, deleteCard } from './redux/CardList'
 import { FaRegHeart } from 'react-icons/fa';
 import { FaTrashAlt } from 'react-icons/fa';
 
@@ -24,9 +24,11 @@ function Cards() {
       }
     }, [postStatus, dispatch])
 
+
+
     const handleClickLike = (e) => {
-      const likeIcon = e.target;
-      likeIcon.classList.toggle('checked');   
+      const likeIcon = e.target.closest('.like-icon');
+      likeIcon.closest('.card-item').classList.toggle('checked');
       const parentBlock = e.target.closest('.card-item')
       // данные с карточки в объект
       const cardId = parentBlock.getAttribute('id')
@@ -34,31 +36,58 @@ function Cards() {
       const cardsObj = {
         id: parseInt(cardId)
       };
-      
+
       dispatch(likeCard(cardsObj))
+
+      if(!likeIcon.closest('.card-item').classList.contains('checked')) {
+        dispatch(unlikeCard())
+        
+      }
 
     }
 
-    const handleFilterClick = () => {
+    const handleFilterLikeClick = () => {
       // вывод лайкнутых карточек
-
       const cardBlock = document.querySelector('.cards-block').children;
+      const filterBtn = document.querySelector('.filter-btn button');
       for(let el of cardBlock) {
-          const cardId = el.getAttribute('id')
+          const cardId = el.getAttribute('id');
           likedCards.map(item => {
-            console.log(item.id);
-              if(parseInt(cardId) !== item.id) {
-                el.classList.add('hide')
+              if(parseInt(cardId) === item.id) {
+                el.classList.add('show')
               }
-          })
+              if(el.classList.contains('checked')) {
+                el.style.display = 'block'
+              } else {
+                el.style.display = 'none';
+              }
+             
+          });
+      }
+
+    }
+
+    const handleFilterLikeUnclick = () => {
+      const cardBlock = document.querySelector('.cards-block').children;
+      console.log(likedCards);
+      
+      for(let el of cardBlock) {
+        el.style.display = 'block'
       }
 
     }
 
     const handleClickDelete = (e) => {
-      const likeIcon = e.target;
-      likeIcon.classList.toggle('checked')   
-             
+        const delBtn = e.target;
+        const cardId = delBtn.closest('.card-item').getAttribute('id');
+        delBtn.closest('.card-item').remove();
+        cardlist.recenttracks.track.map((item, index) => {
+            if(parseInt(cardId) === index) {
+                const deletedItems = {};
+                deletedItems[index] = item;
+                dispatch(deleteCard(deletedItems))
+            }
+        })
     }
 
 
@@ -69,7 +98,7 @@ function Cards() {
     } else {
       return(
         <div>
-          <div className="filter-btn"><button onMouseDown={handleFilterClick}>Фильтр</button></div>
+          <div className="filter-btn"><button onMouseDown={handleFilterLikeClick} onMouseUp={handleFilterLikeUnclick}>Фильтр</button></div>
             <div className="cards-block">
                   {
                     cardlist.recenttracks.track.map((item, index) => (

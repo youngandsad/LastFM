@@ -8,7 +8,7 @@ const initialState = {
 }
 
 export const fetchCards = createAsyncThunk('cards/fetchCards', async () => {
-  const response = await fetch('https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=slavarock&api_key=96ddca1c0f4f0c36bdfd5b5d60b56cbd&limit=10&format=json')
+  const response = await fetch('https://ws.audioscrobbler.com/2.0/?method=user.getRecentTracks&user=slavarock&api_key=96ddca1c0f4f0c36bdfd5b5d60b56cbd&limit=10&nowplaying&format=json')
   const data = await response.json();
   return data;
 })
@@ -21,9 +21,15 @@ const cardsSlice = createSlice({
     likeCard: (state, action) => {
       const liked = action.payload
       state.likedCards.push(liked)
-      console.log(liked);
     },
-    
+    unlikeCard: (state, action) => {
+      if(action.type == "cards/unlikeCard") {
+        state.likedCards = []
+      }
+    },
+    deleteCard: (state, action) => {
+      const deletedItem = action.payload;
+    }
   },
   extraReducers(builder) {
     builder
@@ -38,14 +44,14 @@ const cardsSlice = createSlice({
         state.status = 'failed'
         state.error = action.error.message
       })
-      
+
   }
 
-  
+
 })
 
 
 
-export const { likeCard, cardlist, postStatus, likedCards } = cardsSlice.actions
+export const { likeCard, unlikeCard, cardlist, postStatus, likedCards, deleteCard } = cardsSlice.actions
 
 export default cardsSlice.reducer
